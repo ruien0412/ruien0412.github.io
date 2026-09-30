@@ -2,7 +2,9 @@
 
 張睿恩 (Rui-En Zhang) 的個人網站，部署於 <https://zre.tw>。
 
-以 [Astro](https://astro.build) 建置，搭配 React、Tailwind CSS 與 Framer Motion；推送到 `main` 後由 GitHub Actions 自動建置並部署到 GitHub Pages。
+以 [Astro](https://astro.build) 與 Tailwind CSS 建置，推送到 `main` 後由 GitHub Actions 自動建置並部署到 GitHub Pages。
+
+React 只用在建置時渲染 [react-icons](https://react-icons.github.io/react-icons/) 圖示，瀏覽器端不會載入 React。進場動畫是純 CSS：替元素加上 `data-reveal`（淡入並上移）或 `data-reveal="fade"`（只淡入），捲動到畫面內時就會播放，可用 `style="--reveal-delay: 200ms"` 設定延遲；實作在 `src/styles/global.css` 與 `src/scripts/reveal.ts`。
 
 ## 專案結構
 
@@ -16,6 +18,7 @@
 │   ├── content/blog/       # 部落格文章（Markdown / MDX）
 │   ├── layouts/            # 頁面版型
 │   ├── pages/              # 路由頁面，含 rss.xml
+│   ├── scripts/            # 瀏覽器端小腳本（進場動畫）
 │   └── styles/             # 全域樣式與字型
 └── astro.config.mjs
 ```

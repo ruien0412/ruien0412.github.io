@@ -90,3 +90,7 @@ const imageURL = image && new URL(image, Astro.site);
 {imageURL && <meta property="twitter:image" content={imageURL} />}
 
 <ClientRouter />
+
+<script>
+  import "../scripts/reveal";
+</script>

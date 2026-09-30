@@ -3,22 +3,10 @@ import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import PageLayout from "../../layouts/PageLayout.astro";
 import FormattedDate from "../../components/FormattedDate.astro";
-import MotionWrapper from "../../components/MotionWrapper";
 
 const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
-  },
-};
 ---
 
 <PageLayout
@@ -27,12 +15,10 @@ const containerVariants = {
 >
   {/* Blog Posts Grid */}
   <section class="container mx-auto px-6 lg:px-8 py-16 md:py-24">
-    <MotionWrapper
-      client:load
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      data-reveal="fade"
+      style="--reveal-delay: 200ms"
     >
       {
         posts.map((post) => (
@@ -83,7 +69,7 @@ const containerVariants = {
           </article>
         ))
       }
-    </MotionWrapper>
+    </div>
 
     {/* Empty State */}
     {
@@ -100,9 +86,3 @@ const containerVariants = {
     }
   </section>
 </PageLayout>
-
-<style>
-  motion {
-    display: contents;
-  }
-</style>

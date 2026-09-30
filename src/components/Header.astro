@@ -1,0 +1,121 @@
+---
+import { HiOutlineBars3, HiOutlineXMark } from "react-icons/hi2";
+
+const navItems = [
+  { href: "/about", label: "關於我" },
+  { href: "/skills", label: "技能" },
+  { href: "/projects", label: "專案" },
+  { href: "/blog", label: "部落格" },
+  { href: "/contact", label: "聯絡我" },
+];
+
+// pathname 在建置後會帶結尾斜線（如 /about/），文章頁則是 /blog/xxx/
+const { pathname } = Astro.url;
+const isActive = (href: string) =>
+  pathname === href || pathname.startsWith(`${href}/`);
+
+const linkClass = (href: string) =>
+  isActive(href)
+    ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30"
+    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white";
+---
+
+<header
+  class="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-black/80 border-b border-gray-200 dark:border-gray-800"
+>
+  <div class="container mx-auto px-6 lg:px-8 py-4">
+    <nav class="flex justify-between items-center">
+      {/* Logo */}
+      <div class="transition hover:scale-[1.02] active:scale-[0.98]">
+        <a
+          href="/"
+          class="text-lg font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+        >
+          ZRE
+        </a>
+      </div>
+
+      {/* Desktop Navigation */}
+      <div class="hidden md:flex space-x-1">
+        {
+          navItems.map((item) => (
+            <div class="transition hover:scale-105 active:scale-95">
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? "page" : undefined}
+                class={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${linkClass(item.href)}`}
+              >
+                {item.label}
+              </a>
+            </div>
+          ))
+        }
+      </div>
+
+      {/* Mobile Menu Button */}
+      <button
+        type="button"
+        data-menu-toggle
+        class="group md:hidden p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition active:scale-95"
+        aria-label="開啟選單"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        <HiOutlineBars3 className="w-6 h-6 group-aria-expanded:hidden" />
+        <HiOutlineXMark className="w-6 h-6 hidden group-aria-expanded:block" />
+      </button>
+    </nav>
+
+    {/* Mobile Navigation */}
+    <div id="mobile-nav" class="md:hidden mobile-nav" hidden>
+      <div class="mt-4 space-y-1">
+        {
+          navItems.map((item) => (
+            <a
+              href={item.href}
+              aria-current={isActive(item.href) ? "page" : undefined}
+              class={`block px-4 py-2 rounded-md text-sm font-medium transition hover:translate-x-1 active:scale-95 ${linkClass(item.href)}`}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .mobile-nav:not([hidden]) {
+    animation: mobile-nav-in 0.3s ease-out;
+  }
+
+  @keyframes mobile-nav-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+</style>
+
+<script>
+  // 用事件委派，ClientRouter 換頁替換掉 header 後仍然有效
+  document.addEventListener("click", (event) => {
+    const target = event.target as Element;
+    const toggle = target.closest<HTMLButtonElement>("[data-menu-toggle]");
+    const menu = document.getElementById("mobile-nav");
+    if (!menu) return;
+
+    if (toggle) {
+      const open = toggle.getAttribute("aria-expanded") !== "true";
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "關閉選單" : "開啟選單");
+      menu.hidden = !open;
+    } else if (target.closest("#mobile-nav a")) {
+      menu.hidden = true;
+      const button = document.querySelector("[data-menu-toggle]");
+      button?.setAttribute("aria-expanded", "false");
+      button?.setAttribute("aria-label", "開啟選單");
+    }
+  });
+</script>

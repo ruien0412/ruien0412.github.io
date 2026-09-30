@@ -1,0 +1,33 @@
+---
+import { LuChevronUp } from "react-icons/lu";
+---
+
+<button
+  type="button"
+  id="scroll-to-top"
+  class="fixed bottom-8 right-8 p-3 rounded-full bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 text-white shadow-lg z-50 transition duration-200 hover:scale-110 active:scale-95 opacity-0 scale-80 pointer-events-none data-visible:opacity-100 data-visible:scale-100 data-visible:pointer-events-auto"
+  aria-label="回到最上方"
+  tabindex="-1"
+>
+  <LuChevronUp size={24} />
+</button>
+
+<script>
+  // 捲動超過 300px 才顯示按鈕；用事件委派處理點擊，ClientRouter 換頁後仍然有效
+  function update() {
+    const button = document.getElementById("scroll-to-top");
+    if (!button) return;
+    const visible = window.scrollY > 300;
+    button.toggleAttribute("data-visible", visible);
+    button.tabIndex = visible ? 0 : -1;
+  }
+
+  window.addEventListener("scroll", update, { passive: true });
+  document.addEventListener("astro:page-load", update);
+
+  document.addEventListener("click", (event) => {
+    if ((event.target as Element).closest("#scroll-to-top")) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  });
+</script>

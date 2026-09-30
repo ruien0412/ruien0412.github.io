@@ -1,28 +1,30 @@
 ---
-import MotionWrapper from "./MotionWrapper";
+interface Props {
+  icon: string;
+  title: string;
+  description: string;
+  skills: string[];
+  centered?: boolean;
+  // 進場動畫延遲（毫秒），讓同一排的卡片依序出現
+  revealDelay?: number;
+}
 
-const { icon, title, description, skills, centered = false } = Astro.props;
+const {
+  icon,
+  title,
+  description,
+  skills,
+  centered = false,
+  revealDelay = 0,
+} = Astro.props;
 ---
 
-<MotionWrapper
-  client:idle
-  className={`p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 transition-all hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900 ${
+<div
+  class={`p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 transition-all hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900 ${
     centered ? "md:col-span-2 lg:col-span-3 mx-auto max-w-2xl" : ""
   }`}
-  variants={{
-    hidden: { y: 12, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: [0.25, 0.46, 0.45, 0.94] as const,
-      },
-    },
-  }}
-  initial="hidden"
-  whileInView="visible"
-  viewport={{ once: true }}
+  data-reveal
+  style={`--reveal-delay: ${revealDelay}ms`}
 >
   <div
     class={`flex items-start gap-4 mb-6 ${centered ? "flex-col text-center items-center" : ""}`}
@@ -41,11 +43,11 @@ const { icon, title, description, skills, centered = false } = Astro.props;
   </div>
   <div class={`flex flex-wrap gap-2 ${centered ? "justify-center" : ""}`}>
     {
-      skills.map((skill: any) => (
+      skills.map((skill) => (
         <span class="inline-block px-3 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors hover:bg-gray-200 dark:hover:bg-gray-700">
           {skill}
         </span>
       ))
     }
   </div>
-</MotionWrapper>
+</div>

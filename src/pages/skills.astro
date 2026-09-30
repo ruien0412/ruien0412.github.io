@@ -1,31 +1,8 @@
 ---
-import MotionWrapper from "../components/MotionWrapper";
 import SkillSection from "../components/SkillSection.astro";
 import PageLayout from "../layouts/PageLayout.astro";
 
-// 動畫變體
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.2,
-    },
-  },
-};
 
-const itemVariants = {
-  hidden: { y: 12, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94] as const,
-    },
-  },
-};
 const skillsData = [
   {
     icon: "🎨",
@@ -104,13 +81,7 @@ const otherSkills = [
   <section
     class="container mx-auto px-6 py-24 md:py-32 border-b border-gray-200 dark:border-gray-800"
   >
-    <MotionWrapper
-      client:load
-      className=""
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-    >
+    <div data-reveal="fade">
       <h1
         class="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4"
       >
@@ -121,96 +92,54 @@ const otherSkills = [
       >
         從前端到後端，從設計到實現，持續學習最新技術
       </p>
-    </MotionWrapper>
+    </div>
   </section>
 
   {/* 主要技能區塊 */}
   <section class="py-12">
     <div class="container mx-auto px-6">
-      <MotionWrapper
-        client:load
-        className="grid md:grid-cols-3 gap-6"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        transition={{
-          staggerChildren: 0.12,
-          delayChildren: 0.2,
-        }}
-        viewport={{ once: true, margin: "-100px" }}
-      >
-        {skillsData.map((skill) => <SkillSection {...skill} />)}
-      </MotionWrapper>
+      <div class="grid md:grid-cols-3 gap-6">
+        {
+          skillsData.map((skill, i) => (
+            <SkillSection {...skill} revealDelay={200 + i * 120} />
+          ))
+        }
+      </div>
     </div>
   </section>
 
   {/* AI & 機器學習區塊 */}
   <section class="py-12 bg-gray-50 dark:bg-gray-900/50">
     <div class="container mx-auto px-6">
-      <MotionWrapper
-        client:idle
-        initial="hidden"
-        whileInView="visible"
-        transition={{
-          staggerChildren: 0.12,
-          delayChildren: 0.2,
-        }}
-        viewport={{ once: true, margin: "-100px" }}
-        variants={containerVariants}
-      >
-        <SkillSection
-          icon="🤖"
-          title="AI & 機器學習"
-          description="參與全國AI競賽獲得佳作，具備機器學習實務經驗與數據分析能力"
-          skills={aiSkills}
-          centered={true}
-        />
-      </MotionWrapper>
+      <SkillSection
+        icon="🤖"
+        title="AI & 機器學習"
+        description="參與全國AI競賽獲得佳作，具備機器學習實務經驗與數據分析能力"
+        skills={aiSkills}
+        centered={true}
+        revealDelay={200}
+      />
     </div>
   </section>
 
   {/* 其他技能區塊 */}
   <section class="py-12">
     <div class="container mx-auto px-6">
-      <MotionWrapper
-        client:visible
-        className="text-center mb-12"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        transition={{
-          staggerChildren: 0.12,
-          delayChildren: 0.2,
-        }}
-        viewport={{ once: true, margin: "-100px" }}
-      >
+      <div class="text-center mb-12" data-reveal="fade">
         <h2
           class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white"
         >
           開發工具與其他技能
         </h2>
-      </MotionWrapper>
+      </div>
 
-      <MotionWrapper
-        client:visible
-        className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        transition={{
-          staggerChildren: 0.12,
-          delayChildren: 0.2,
-        }}
-        viewport={{ once: true, margin: "-100px" }}
-      >
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         {
-          otherSkills.map((item) => (
-            <MotionWrapper
-              client:visible
-              key={item.title}
-              className="p-6 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-center transition-all hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900"
-              variants={itemVariants}
-              whileHover={{ y: -4 }}
+          otherSkills.map((item, i) => (
+            <div
+              class="p-6 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-center transition-all hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900 hover:-translate-y-1"
+              data-reveal
+              style={`--reveal-delay: ${200 + i * 120}ms`}
             >
               <div class="text-3xl mb-4 text-center">{item.icon}</div>
               <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
@@ -219,10 +148,10 @@ const otherSkills = [
               <p class="text-sm text-gray-600 dark:text-gray-400">
                 {item.description}
               </p>
-            </MotionWrapper>
+            </div>
           ))
         }
-      </MotionWrapper>
+      </div>
     </div>
   </section>
 </PageLayout>
