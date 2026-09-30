@@ -1,6 +1,13 @@
 ---
+import type { ComponentProps } from "astro/types";
 import ProjectCard from "./ProjectCard.astro";
-import MotionWrapper from "./MotionWrapper";
+
+interface Props {
+  title: string;
+  projects: Omit<ComponentProps<typeof ProjectCard>, "size" | "revealDelay">[];
+  size?: "large" | "small";
+  gridCols?: string;
+}
 
 const {
   title,
@@ -8,45 +15,11 @@ const {
   size = "large",
   gridCols = "lg:grid-cols-3",
 } = Astro.props;
-// 動畫變體
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { y: 12, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94] as const,
-    },
-  },
-};
 ---
 
 <div class="container mx-auto px-6 lg:px-8 mb-12">
   {/* 標題區塊 */}
-  <MotionWrapper
-    client:idle
-    className="mb-12"
-    variants={containerVariants}
-    initial="hidden"
-    whileInView="visible"
-    transition={{
-      staggerChildren: 0.12,
-      delayChildren: 0.2,
-    }}
-    viewport={{ once: true, margin: "-100px" }}
-  >
+  <div class="mb-12" data-reveal>
     <h2
       class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4"
     >
@@ -61,32 +34,14 @@ const itemVariants = {
           : "這些是我在學習過程中完成的小專案，涵蓋了多種技術和應用場景"
       }
     </p>
-  </MotionWrapper>
+  </div>
 
   {/* 專案網格 */}
-  <MotionWrapper
-    client:idle
-    className={`grid md:grid-cols-2 ${gridCols} gap-6`}
-    variants={containerVariants}
-    initial="hidden"
-    whileInView="visible"
-    transition={{
-      staggerChildren: 0.12,
-      delayChildren: 0.2,
-    }}
-    viewport={{ once: true, margin: "-100px" }}
-  >
+  <div class={`grid md:grid-cols-2 ${gridCols} gap-6`}>
     {
-      projects.map((project: any) => (
-        <MotionWrapper
-          client:idle
-          key={project.title}
-          variants={itemVariants}
-          whileHover={{ y: -4 }}
-        >
-          <ProjectCard {...project} size={size} />
-        </MotionWrapper>
+      projects.map((project, i) => (
+        <ProjectCard {...project} size={size} revealDelay={200 + i * 120} />
       ))
     }
-  </MotionWrapper>
+  </div>
 </div>

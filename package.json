@@ -1,5 +1,5 @@
 {
-  "name": "heavenmanysugar-github-io",
+  "name": "ruien0412-github-io",
   "type": "module",
   "version": "0.2.0",
   "scripts": {
@@ -12,6 +12,7 @@
   "dependencies": {
     "@astrojs/mdx": "^8.0.2",
     "@astrojs/react": "^7.0.0",
+    "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
     "astro": "^7.3.5",
     "react": "^19.2.1",
@@ -21,7 +22,6 @@
     "@tailwindcss/vite": "^4.3.3",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
-    "framer-motion": "^13.4.4",
     "react-icons": "^5.5.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^7"

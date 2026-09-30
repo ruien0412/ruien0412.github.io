@@ -1,0 +1,30 @@
+<div
+  id="scroll-progress"
+  class="fixed top-0 left-0 right-0 h-1 bg-linear-to-r from-blue-500 via-cyan-400 to-blue-400 dark:from-blue-400 dark:via-cyan-300 dark:to-blue-300 origin-left scale-x-0 transition-transform duration-150 ease-out transform-gpu z-9999 shadow-lg pointer-events-none"
+>
+</div>
+
+<script>
+  // 捲動時更新進度條；元素在 ClientRouter 換頁時會被替換，所以每次都重新查詢
+  let ticking = false;
+
+  function update() {
+    ticking = false;
+    const bar = document.getElementById("scroll-progress");
+    if (!bar) return;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+    bar.style.scale = `${progress} 1`;
+  }
+
+  function requestUpdate() {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+  }
+
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate, { passive: true });
+  document.addEventListener("astro:page-load", update);
+</script>

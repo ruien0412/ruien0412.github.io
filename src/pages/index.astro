@@ -1,7 +1,6 @@
 ---
 import { HiOutlineArrowRight, HiOutlineSparkles } from "react-icons/hi2";
-import MotionWrapper from "../components/MotionWrapper";
-import TypewriterText from "../components/TypewriterText";
+import TypewriterText from "../components/TypewriterText.astro";
 import PageLayout from "../layouts/PageLayout.astro";
 
 const descriptions = [
@@ -9,29 +8,6 @@ const descriptions = [
   "喜歡面對各種技術挑戰，透過持續的探索與練習，期望為使用者帶來更好的體驗。",
   "相信技術與創意能帶來改變，保持好奇心與學習動力，踏實累積能力，朝更好的數位產品努力。",
 ];
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { y: 12, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94] as const,
-    },
-  },
-};
 ---
 
 <PageLayout>
@@ -39,77 +15,52 @@ const itemVariants = {
   <section
     class="container mx-auto px-6 lg:px-8 py-24 md:py-32 border-b border-gray-200 dark:border-gray-800 relative z-10"
   >
-    <MotionWrapper
-      client:idle
-      className="max-w-2xl"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      transition={{
-        staggerChildren: 0.12,
-        delayChildren: 0.2,
-      }}
-    >
+    <div class="max-w-2xl">
       {/* 頂部標籤 */}
-      <MotionWrapper
-        client:idle
-        variants={itemVariants}
-        className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 px-3 py-1.5 rounded-full text-sm font-medium mb-6"
+      <div
+        class="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 px-3 py-1.5 rounded-full text-sm font-medium mb-6"
+        data-reveal
+        style="--reveal-delay: 200ms"
       >
         <HiOutlineSparkles className="w-4 h-4" />
         <span>歡迎來訪</span>
-      </MotionWrapper>
+      </div>
 
       {/* 主標題 - 清晰的視覺層級 */}
-      <MotionWrapper
-        client:idle
-        type="h1"
-        className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white leading-tight mb-6"
-        variants={itemVariants}
+      <h1
+        class="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white leading-tight mb-6"
+        data-reveal
+        style="--reveal-delay: 320ms"
       >
         我是 <span class="text-blue-600 dark:text-blue-400">張睿恩</span>
-      </MotionWrapper>
+      </h1>
 
-      <MotionWrapper
-        client:idle
-        type="h2"
-        className="text-2xl md:text-3xl font-semibold text-gray-600 dark:text-gray-300 mb-6"
-        variants={itemVariants}
+      <h2
+        class="text-2xl md:text-3xl font-semibold text-gray-600 dark:text-gray-300 mb-6"
+        data-reveal
+        style="--reveal-delay: 440ms"
       >
         全端開發者
-      </MotionWrapper>
+      </h2>
 
       {/* 描述文字 - 固定高度防止版面移動 */}
       <TypewriterText
-        client:idle
         texts={descriptions}
         typingSpeed={50}
         deletingSpeed={30}
         delayBetweenTexts={2000}
-        className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-8 max-w-xl min-h-22 lxgw-wenkai-mono-tc-regular"
-        variants={itemVariants}
+        class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-8 max-w-xl min-h-22 lxgw-wenkai-mono-tc-regular"
+        data-reveal
+        style="--reveal-delay: 560ms"
       />
 
-      {/* SEO 改善：提供給不支援 JS 的爬蟲的靜態內容 */}
-      <noscript>
-        <p
-          class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-8 max-w-xl hidden"
-        >
-          {descriptions[0]}
-        </p>
-      </noscript>
-
       {/* 主要行動按鈕 - 清晰且易於識別 */}
-      <MotionWrapper
-        client:idle
-        className="flex flex-col sm:flex-row gap-4"
-        variants={itemVariants}
+      <div
+        class="flex flex-col sm:flex-row gap-4"
+        data-reveal
+        style="--reveal-delay: 680ms"
       >
-        <MotionWrapper
-          client:idle
-          whileHover={{ x: 4 }}
-          whileTap={{ scale: 0.98 }}
-        >
+        <div class="hover:translate-x-1 active:scale-[0.98] transition">
           <a
             href="/projects"
             class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-lg font-medium transition-colors duration-200"
@@ -117,54 +68,37 @@ const itemVariants = {
             查看作品
             <HiOutlineArrowRight className="w-4 h-4" />
           </a>
-        </MotionWrapper>
-        <MotionWrapper
-          client:idle
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
+        </div>
+        <div class="hover:scale-[1.02] active:scale-[0.98] transition">
           <a
             href="/about"
             class="inline-flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-white px-6 py-3.5 rounded-lg font-medium transition-colors duration-200"
           >
             了解更多
           </a>
-        </MotionWrapper>
-      </MotionWrapper>
-    </MotionWrapper>
+        </div>
+      </div>
+    </div>
   </section>
 
   {/* Navigation Grid - HIG Design with Clear Hierarchy */}
   <section class="container mx-auto px-6 lg:px-8 py-24 md:py-32 relative z-10">
-    <MotionWrapper
-      client:visible
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      transition={{
-        staggerChildren: 0.12,
-        delayChildren: 0.2,
-      }}
-      viewport={{ once: true, margin: "-100px" }}
-      className="max-w-4xl"
-    >
+    <div class="max-w-4xl">
       {/* Section Title */}
-      <MotionWrapper
-        client:visible
-        type="h2"
-        className="text-4xl font-bold text-gray-900 dark:text-white mb-4"
-        variants={itemVariants}
+      <h2
+        class="text-4xl font-bold text-gray-900 dark:text-white mb-4"
+        data-reveal
+        style="--reveal-delay: 200ms"
       >
         探索內容
-      </MotionWrapper>
-      <MotionWrapper
-        client:visible
-        type="p"
-        className="text-lg text-gray-600 dark:text-gray-400 mb-12 lxgw-wenkai-mono-tc-regular"
-        variants={itemVariants}
+      </h2>
+      <p
+        class="text-lg text-gray-600 dark:text-gray-400 mb-12 lxgw-wenkai-mono-tc-regular"
+        data-reveal
+        style="--reveal-delay: 320ms"
       >
         了解更多關於我的背景、技能和作品
-      </MotionWrapper>
+      </p>
 
       {/* Navigation Grid */}
       <div class="grid md:grid-cols-2 gap-6">
@@ -172,7 +106,7 @@ const itemVariants = {
           [
             {
               href: "/about",
-              icon: "👨‍‍",
+              icon: "👨‍💻",
               title: "關於我",
               description: "背景故事與專業經歷",
             },
@@ -194,13 +128,11 @@ const itemVariants = {
               title: "聯絡我",
               description: "尋求合作或交流",
             },
-          ].map((item) => (
-            <MotionWrapper
-              client:visible
-              key={item.href}
-              variants={itemVariants}
-              whileHover={{ y: -4 }}
-              className="group"
+          ].map((item, i) => (
+            <div
+              class="group hover:-translate-y-1 transition"
+              data-reveal
+              style={`--reveal-delay: ${440 + i * 120}ms`}
             >
               <a
                 href={item.href}
@@ -219,11 +151,11 @@ const itemVariants = {
                   <HiOutlineArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors shrink-0 mt-0.5" />
                 </div>
               </a>
-            </MotionWrapper>
+            </div>
           ))
         }
       </div>
-    </MotionWrapper>
+    </div>
   </section>
 </PageLayout>
 

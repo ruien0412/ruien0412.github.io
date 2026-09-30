@@ -1,5 +1,7 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
+import BaseHead, { type Props as BaseHeadProps } from "../components/BaseHead.astro";
+type Props = BaseHeadProps;
+
 const { title, description, image } = Astro.props;
 ---
 

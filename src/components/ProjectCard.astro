@@ -1,34 +1,4 @@
 ---
-import MotionWrapper from "./MotionWrapper";
-
-// 安全的連結開啟函數
-const openLink = (url: string) => {
-  try {
-    if (!url || url.trim() === "") {
-      console.error("Invalid URL:", url);
-      return;
-    }
-
-    if (url.startsWith("/")) {
-      window.location.href = url;
-    } else {
-      const newWindow = window.open(url, "_blank");
-      if (newWindow) {
-        newWindow.focus();
-      } else {
-        window.location.href = url;
-      }
-    }
-  } catch (error) {
-    console.error("Error opening link:", error);
-    try {
-      window.location.href = url;
-    } catch (fallbackError) {
-      console.error("Fallback also failed:", fallbackError);
-    }
-  }
-};
-
 // 技術標籤的顏色映射
 const getTechColor = (tech: string) => {
   const colorMap: { [key: string]: string } = {
@@ -63,6 +33,18 @@ const getTechColor = (tech: string) => {
     "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200"
   );
 };
+interface Props {
+  title: string;
+  description: string;
+  technologies: string[];
+  projectUrl?: string;
+  githubUrl: string;
+  icon: string;
+  size?: "large" | "small";
+  // 進場動畫延遲（毫秒），讓同一排的卡片依序出現
+  revealDelay?: number;
+}
+
 const {
   title,
   description,
@@ -71,14 +53,18 @@ const {
   githubUrl,
   icon,
   size = "large",
+  revealDelay = 0,
 } = Astro.props;
 const isLarge = size === "large";
+
+const externalLink = (url: string) =>
+  url.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {};
 ---
 
-<MotionWrapper
-  client:idle
-  className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 transition-all hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900"
-  whileHover={{ y: -4 }}
+<div
+  class="bg-white dark:bg-gray-900 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 transition-all hover:-translate-y-1 hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900"
+  data-reveal
+  style={`--reveal-delay: ${revealDelay}ms`}
 >
   {/* 圖標區域 */}
   <div
@@ -107,7 +93,7 @@ const isLarge = size === "large";
     {/* 技術標籤 */}
     <div class={`flex flex-wrap gap-2 mb-4 ${isLarge ? "" : "gap-1.5"}`}>
       {
-        technologies.map((tech: any) => (
+        technologies.map((tech) => (
           <span
             class={`${getTechColor(tech)} px-2 py-1 rounded-lg font-medium transition-colors ${isLarge ? "text-xs" : "text-xs"}`}
           >
@@ -121,12 +107,10 @@ const isLarge = size === "large";
     <div class="flex gap-3">
       {
         projectUrl && (
-          <button
+          <a
+            href={projectUrl}
+            {...externalLink(projectUrl)}
             class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium flex items-center gap-1 text-sm transition-colors"
-            on-click={(e: any) => {
-              e.preventDefault();
-              openLink(projectUrl);
-            }}
           >
             查看專案
             <svg
@@ -142,15 +126,13 @@ const isLarge = size === "large";
                 d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
               />
             </svg>
-          </button>
+          </a>
         )
       }
-      <button
+      <a
+        href={githubUrl}
+        {...externalLink(githubUrl)}
         class="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300 font-medium flex items-center gap-1 text-sm transition-colors"
-        on-click={(e: any) => {
-          e.preventDefault();
-          openLink(githubUrl);
-        }}
       >
         GitHub
         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
@@ -158,7 +140,7 @@ const isLarge = size === "large";
             d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
           ></path>
         </svg>
-      </button>
+      </a>
     </div>
   </div>
-</MotionWrapper>
+</div>

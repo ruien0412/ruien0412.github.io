@@ -3,7 +3,6 @@ import { MdEmail } from "react-icons/md";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { SiGitea } from "react-icons/si";
 import type { IconType } from "react-icons";
-import MotionWrapper from "../components/MotionWrapper";
 import PageLayout from "../layouts/PageLayout.astro";
 
 type ContactMethod = {
@@ -25,8 +24,8 @@ const contactMethods: ContactMethod[] = [
   {
     icon: FaGithub,
     title: "GitHub",
-    value: "heavenmanysugar",
-    href: "https://github.com/heavenmanysugar",
+    value: "ruien0412",
+    href: "https://github.com/ruien0412",
     description: "查看我的開源專案",
   },
   {
@@ -44,29 +43,6 @@ const contactMethods: ContactMethod[] = [
     description: "專業網絡連結",
   },
 ];
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { y: 12, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94] as const,
-    },
-  },
-};
 ---
 
 <PageLayout
@@ -93,28 +69,15 @@ const itemVariants = {
 
   {/* Contact Methods */}
   <section class="container mx-auto px-6 lg:px-8 py-12">
-    <MotionWrapper
-    client:load
-      className="grid md:grid-cols-2 gap-6"
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      transition={{
-        staggerChildren: 0.12,
-        delayChildren: 0.2,
-      }}
-      viewport={{ once: true, margin: "-100px" }}
-    >
+    <div class="grid md:grid-cols-2 gap-6">
       {
-        contactMethods.map((method) => {
+        contactMethods.map((method, i) => {
           const IconComponent = method.icon;
           return (
-            <MotionWrapper
-            client:load
-              key={method.title}
-              className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800 transition-all hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900"
-              variants={itemVariants}
-              whileHover={{ y: -4 }}
+            <div
+              class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800 transition-all hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900 hover:-translate-y-1"
+              data-reveal
+              style={`--reveal-delay: ${200 + i * 120}ms`}
             >
               <div class="flex items-start gap-4 mb-4">
                 <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center shrink-0">
@@ -154,23 +117,16 @@ const itemVariants = {
                   />
                 </svg>
               </a>
-            </MotionWrapper>
+            </div>
           );
         })
       }
-    </MotionWrapper>
+    </div>
   </section>
 
   {/* Location Section */}
   <section class="container mx-auto px-6 lg:px-8 py-12">
-    <MotionWrapper
-    client:visible
-      className="max-w-md mx-auto text-center"
-      initial={{ opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      viewport={{ once: true, margin: "-100px" }}
-    >
+    <div class="max-w-md mx-auto text-center" data-reveal>
       <div
         class="bg-gray-50 dark:bg-gray-900 rounded-xl p-8 border border-gray-200 dark:border-gray-800"
       >
@@ -184,18 +140,15 @@ const itemVariants = {
         </h3>
         <p class="text-gray-600 dark:text-gray-400">台北，台灣</p>
       </div>
-    </MotionWrapper>
+    </div>
   </section>
 
   {/* Call to Action */}
   <section class="container mx-auto px-6 lg:px-8 py-24 md:py-32">
-    <MotionWrapper
-    client:visible
-      className="max-w-2xl mx-auto text-center"
-      initial={{ opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.1 }}
-      viewport={{ once: true, margin: "-100px" }}
+    <div
+      class="max-w-2xl mx-auto text-center"
+      data-reveal
+      style="--reveal-delay: 100ms"
     >
       <div
         class="bg-white dark:bg-gray-900 rounded-xl p-8 md:p-12 border border-gray-200 dark:border-gray-800"
@@ -215,6 +168,6 @@ const itemVariants = {
           發送郵件
         </a>
       </div>
-    </MotionWrapper>
+    </div>
   </section>
 </PageLayout>

@@ -1,16 +1,17 @@
 ---
-import MotionWrapper from "./MotionWrapper";
+interface Props {
+  buildTime: string;
+  shortCommitHash: string;
+  branchName: string;
+}
+
 const { buildTime, shortCommitHash, branchName } = Astro.props;
 ---
 
-<MotionWrapper
-  client:visible
-  type="div"
-  className="text-xs text-gray-500 space-y-1"
-  initial={{ opacity: 0, y: 10 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.6, delay: 1.0 }}
-  viewport={{ once: true }}
+<div
+  class="text-xs text-gray-500 space-y-1"
+  data-reveal
+  style="--reveal-delay: 600ms"
 >
   <p>
     Build: <span class="font-mono text-gray-400">{shortCommitHash}</span>
@@ -19,7 +20,7 @@ const { buildTime, shortCommitHash, branchName } = Astro.props;
         <span class="ml-2">
           on{" "}
           <a
-            href={`https://github.com/HeavenManySugar/HeavenManySugar.github.io/tree/${branchName}`}
+            href={`https://github.com/ruien0412/ruien0412.github.io/tree/${branchName}`}
             target="_blank"
             rel="noopener noreferrer"
             class="font-mono text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:underline transition-colors"
@@ -48,4 +49,4 @@ const { buildTime, shortCommitHash, branchName } = Astro.props;
       </p>
     )
   }
-</MotionWrapper>
+</div>

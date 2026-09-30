@@ -3,19 +3,24 @@
 // all pages through the use of the <BaseHead /> component.
 import "../styles/global.css";
 import "../styles/fonts.css";
-import type { ImageMetadata } from "astro";
-import { SITE_TITLE } from "../consts";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import { ClientRouter } from "astro:transitions";
 
-interface Props {
-  title: string;
-  description: string;
-  image?: ImageMetadata;
+export interface Props {
+  title?: string;
+  description?: string;
+  // Path or URL of the social preview image, e.g. a blog post's heroImage
+  image?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = "" } = Astro.props;
+const {
+  title = SITE_TITLE,
+  description = SITE_DESCRIPTION,
+  image,
+} = Astro.props;
+const imageURL = image && new URL(image, Astro.site);
 ---
 
 <!-- Global Metadata -->
@@ -30,6 +35,14 @@ const { title, description, image = "" } = Astro.props;
   href={new URL("rss.xml", Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
+
+<!-- Google Fonts (a <link> starts downloading earlier than a CSS @import) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+Mono+TC&family=Noto+Sans+TC&display=swap"
+/>
 
 <!-- Font preloads -->
 <link
@@ -61,16 +74,23 @@ const { title, description, image = "" } = Astro.props;
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
-<meta property="og:url" content={Astro.url} />
+<meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image.src, Astro.url)} />
+{imageURL && <meta property="og:image" content={imageURL} />}
 
 <!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.url} />
+<meta
+  property="twitter:card"
+  content={imageURL ? "summary_large_image" : "summary"}
+/>
+<meta property="twitter:url" content={canonicalURL} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image.src, Astro.url)} />
+{imageURL && <meta property="twitter:image" content={imageURL} />}
 
 <ClientRouter />
+
+<script>
+  import "../scripts/reveal";
+</script>

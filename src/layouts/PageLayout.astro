@@ -1,9 +1,11 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import ScrollProgress from "../components/ScrollProgress";
-import ScrollToTop from "../components/ScrollToTop";
-import Header from "../components/Header";
+import BaseHead, { type Props as BaseHeadProps } from "../components/BaseHead.astro";
+import ScrollProgress from "../components/ScrollProgress.astro";
+import ScrollToTop from "../components/ScrollToTop.astro";
+import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+type Props = BaseHeadProps;
+
 const { title, description, image } = Astro.props;
 ---
 
@@ -13,10 +15,10 @@ const { title, description, image } = Astro.props;
     <BaseHead title={title} description={description} image={image} />
   </head>
   <body class="antialiased">
-    <ScrollProgress client:visible />
-    <ScrollToTop client:idle />
+    <ScrollProgress />
+    <ScrollToTop />
     <div class="min-h-screen bg-white dark:bg-gray-950">
-      <Header client:load pathname={Astro.url.pathname} />
+      <Header />
       <slot />
       <Footer />
     </div>

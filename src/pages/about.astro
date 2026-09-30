@@ -1,28 +1,6 @@
 ---
-import MotionWrapper from "../components/MotionWrapper";
 import PageLayout from "../layouts/PageLayout.astro";
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.2,
-    },
-  },
-};
 
-const itemVariants = {
-  hidden: { y: 12, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94] as const,
-    },
-  },
-};
 
 const educationItems = [
   {
@@ -93,53 +71,37 @@ const techStack = [
   <section
     class="container mx-auto px-6 lg:px-8 py-24 md:py-32 border-b border-gray-200 dark:border-gray-800"
   >
-    <MotionWrapper
-      client:load
-      className="max-w-2xl"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-    >
-      <MotionWrapper
-        client:load
-        type="h1"
-        className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white leading-tight mb-6"
-        variants={itemVariants}
+    <div class="max-w-2xl">
+      <h1
+        class="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white leading-tight mb-6"
+        data-reveal
+        style="--reveal-delay: 200ms"
       >
         關於我
-      </MotionWrapper>
-      <MotionWrapper
-        client:load
-        type="p"
-        className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed mb-8 max-w-xl lxgw-wenkai-mono-tc-regular"
-        variants={itemVariants}
+      </h1>
+      <p
+        class="text-xl text-gray-600 dark:text-gray-400 leading-relaxed mb-8 max-w-xl lxgw-wenkai-mono-tc-regular"
+        data-reveal
+        style="--reveal-delay: 320ms"
       >
         我是張睿恩，一位對程式設計充滿熱忱的開發者。從高職到大學，我不斷精進技術能力，並在各項競賽中取得優異成績。相信技術與設計的完美結合能創造出優秀的使用者體驗。
-      </MotionWrapper>
-    </MotionWrapper>
+      </p>
+    </div>
   </section>
 
   {/* 基本資訊卡片 */}
   <section class="container mx-auto px-6 lg:px-8 py-12">
-    <MotionWrapper
-      client:load
-      className="grid md:grid-cols-3 gap-6 max-w-4xl"
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-    >
+    <div class="grid md:grid-cols-3 gap-6 max-w-4xl">
       {
         [
           { label: "學校", value: "國立臺北科技大學" },
           { label: "系別", value: "資訊工程學系" },
           { label: "年級", value: "四年級" },
-        ].map((item) => (
-          <MotionWrapper
-            client:load
-            key={item.label}
-            variants={itemVariants}
-            className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg border border-gray-200 dark:border-gray-800"
+        ].map((item, i) => (
+          <div
+            class="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg border border-gray-200 dark:border-gray-800"
+            data-reveal
+            style={`--reveal-delay: ${200 + i * 120}ms`}
           >
             <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
               {item.label}
@@ -147,40 +109,30 @@ const techStack = [
             <p class="text-lg font-semibold text-gray-900 dark:text-white">
               {item.value}
             </p>
-          </MotionWrapper>
+          </div>
         ))
       }
-    </MotionWrapper>
+    </div>
   </section>
 
   {/* 教育背景 */}
   <section class="container mx-auto px-6 lg:px-8 py-12">
-    <MotionWrapper
-      client:idle
-      className="max-w-4xl"
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-    >
-      <MotionWrapper
-        client:idle
-        type="h2"
-        className="text-4xl font-bold text-gray-900 dark:text-white mb-12"
-        variants={itemVariants}
+    <div class="max-w-4xl">
+      <h2
+        class="text-4xl font-bold text-gray-900 dark:text-white mb-12"
+        data-reveal
+        style="--reveal-delay: 200ms"
       >
         教育背景
-      </MotionWrapper>
+      </h2>
       <div class="space-y-6">
         {
           educationItems.map((item, i) => (
-            <div>
-              <MotionWrapper
-                client:visible
-                key={i}
-                variants={itemVariants}
-                className="flex gap-6 pb-6 border-b border-gray-200 dark:border-gray-800 last:border-b-0"
-              >
+            <div
+              class="flex gap-6 pb-6 border-b border-gray-200 dark:border-gray-800 last:border-b-0"
+              data-reveal
+              style={`--reveal-delay: ${320 + i * 120}ms`}
+            >
                 <div class="text-sm font-semibold text-blue-600 dark:text-blue-400 min-w-fit">
                   {item.year}
                 </div>
@@ -195,40 +147,30 @@ const techStack = [
                     {item.description}
                   </p>
                 </div>
-              </MotionWrapper>
             </div>
           ))
         }
       </div>
-    </MotionWrapper>
+    </div>
   </section>
 
   {/* 獲獎與榮譽 */}
   <section class="container mx-auto px-6 lg:px-8 py-12">
-    <MotionWrapper
-      client:visible
-      className="max-w-4xl"
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-    >
-      <MotionWrapper
-        client:visible
-        type="h2"
-        className="text-4xl font-bold text-gray-900 dark:text-white mb-12"
-        variants={itemVariants}
+    <div class="max-w-4xl">
+      <h2
+        class="text-4xl font-bold text-gray-900 dark:text-white mb-12"
+        data-reveal
+        style="--reveal-delay: 200ms"
       >
         🏆 獲獎與榮譽
-      </MotionWrapper>
+      </h2>
       <div class="grid md:grid-cols-2 gap-6">
         {
           awards.map((award, i) => (
-            <MotionWrapper
-              client:visible
-              key={i}
-              variants={itemVariants}
-              className="bg-linear-to-br from-blue-50 to-blue-50 dark:from-blue-950/20 dark:to-blue-900/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800"
+            <div
+              class="bg-linear-to-br from-blue-50 to-blue-50 dark:from-blue-950/20 dark:to-blue-900/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800"
+              data-reveal
+              style={`--reveal-delay: ${320 + i * 120}ms`}
             >
               <div class="flex items-start justify-between mb-3">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
@@ -244,39 +186,30 @@ const techStack = [
               <p class="text-blue-600 dark:text-blue-400 font-semibold">
                 {award.award}
               </p>
-            </MotionWrapper>
+            </div>
           ))
         }
       </div>
-    </MotionWrapper>
+    </div>
   </section>
 
   {/* 技術棧 */}
   <section class="container mx-auto px-6 lg:px-8 py-12">
-    <MotionWrapper
-      client:visible
-      className="max-w-4xl"
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-    >
-      <MotionWrapper
-        client:visible
-        type="h2"
-        className="text-4xl font-bold text-gray-900 dark:text-white mb-12"
-        variants={itemVariants}
+    <div class="max-w-4xl">
+      <h2
+        class="text-4xl font-bold text-gray-900 dark:text-white mb-12"
+        data-reveal
+        style="--reveal-delay: 200ms"
       >
         技術棧
-      </MotionWrapper>
+      </h2>
       <div class="grid md:grid-cols-2 gap-6">
         {
           techStack.map((tech, i) => (
-            <MotionWrapper
-              client:visible
-              key={i}
-              variants={itemVariants}
-              className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg border border-gray-200 dark:border-gray-800"
+            <div
+              class="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg border border-gray-200 dark:border-gray-800"
+              data-reveal
+              style={`--reveal-delay: ${320 + i * 120}ms`}
             >
               <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">
                 {tech.title}
@@ -291,40 +224,31 @@ const techStack = [
                   </span>
                 ))}
               </div>
-            </MotionWrapper>
+            </div>
           ))
         }
       </div>
-    </MotionWrapper>
+    </div>
   </section>
 
   {/* 核心價值 */}
   <section class="container mx-auto px-6 lg:px-8 py-12">
-    <MotionWrapper
-      client:visible
-      className="max-w-3xl mx-auto"
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-    >
-      <MotionWrapper
-        client:visible
-        type="h2"
-        className="text-4xl font-bold text-gray-900 dark:text-white mb-8"
-        variants={itemVariants}
+    <div class="max-w-3xl mx-auto">
+      <h2
+        class="text-4xl font-bold text-gray-900 dark:text-white mb-8"
+        data-reveal
+        style="--reveal-delay: 200ms"
       >
         核心價值
-      </MotionWrapper>
-      <MotionWrapper client:visible variants={itemVariants}>
-        <div class="space-y-4">
+      </h2>
+      <div class="space-y-4" data-reveal style="--reveal-delay: 320ms">
           {
             [
               "💡 持續學習 - 關注最新技術趨勢與最佳實踐",
               "🎯 問題解決 - 透過代碼創造實際價值",
               "🤝 團隊協作 - 相信開放溝通與合作",
               "✨ 追求卓越 - 注重細節與使用者體驗",
-            ].map((value, i) => (
+            ].map((value) => (
               <div class="flex items-start gap-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
                 <span class="text-xl shrink-0">{value.split(" - ")[0]}</span>
                 <div>
@@ -335,8 +259,7 @@ const techStack = [
               </div>
             ))
           }
-        </div>
-      </MotionWrapper>
-    </MotionWrapper>
+      </div>
+    </div>
   </section>
 </PageLayout>

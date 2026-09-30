@@ -1,0 +1,83 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"p"> {
+  texts: string[];
+  typingSpeed?: number;
+  deletingSpeed?: number;
+  delayBetweenTexts?: number;
+}
+
+const {
+  texts,
+  typingSpeed = 50,
+  deletingSpeed = 30,
+  delayBetweenTexts = 2000,
+  ...attrs
+} = Astro.props;
+---
+
+{/* 先輸出第一段完整文字，爬蟲與停用 JS 的訪客都看得到；載入後才開始打字動畫 */}
+<p
+  data-typewriter={JSON.stringify(texts)}
+  data-typing-speed={typingSpeed}
+  data-deleting-speed={deletingSpeed}
+  data-delay={delayBetweenTexts}
+  {...attrs}
+>
+  <span data-typewriter-text>{texts[0]}</span><span class="animate-pulse"
+    >▌</span
+  >
+</p>
+
+<script>
+  function start(el: HTMLElement) {
+    const output = el.querySelector<HTMLElement>("[data-typewriter-text]");
+    if (!output || el.dataset.typewriterStarted) return;
+    el.dataset.typewriterStarted = "true";
+
+    const texts: string[] = JSON.parse(el.dataset.typewriter ?? "[]");
+    const typingSpeed = Number(el.dataset.typingSpeed);
+    const deletingSpeed = Number(el.dataset.deletingSpeed);
+    const delay = Number(el.dataset.delay);
+
+    let index = 0;
+    let text = texts[0] ?? "";
+    let deleting = true;
+
+    const tick = () => {
+      // ClientRouter 換頁後元素已被移除，停止計時
+      if (!el.isConnected) return;
+
+      const target = texts[index];
+      if (deleting) {
+        if (text.length > 0) {
+          text = text.slice(0, -1);
+          output.textContent = text;
+          setTimeout(tick, deletingSpeed);
+        } else {
+          deleting = false;
+          index = (index + 1) % texts.length;
+          setTimeout(tick, typingSpeed);
+        }
+      } else if (text.length < target.length) {
+        text = target.slice(0, text.length + 1);
+        output.textContent = text;
+        setTimeout(tick, typingSpeed);
+      } else {
+        deleting = true;
+        setTimeout(tick, delay);
+      }
+    };
+
+    // 第一段文字已完整顯示，停留一段時間後才開始刪除
+    setTimeout(tick, delay * 2);
+  }
+
+  document.addEventListener("astro:page-load", () => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    document
+      .querySelectorAll<HTMLElement>("[data-typewriter]")
+      .forEach(start);
+  });
+</script>
