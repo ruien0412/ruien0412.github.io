@@ -7,7 +7,7 @@ import ClientOnlyBuildInfo from "../components/ClientOnlyBuildInfo.astro";
 import { buildInfo } from "../build-info";
 const socialLinks = [
   {
-    href: "https://github.com/heavenmanysugar",
+    href: "https://github.com/ruien0412",
     icon: FaGithub,
     label: "GitHub",
   },
@@ -106,7 +106,7 @@ const socialLinks = [
         viewport={{ once: true }}
       >
         <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
-          © 2025 張睿恩 (Rui-En Zhang)
+          © {new Date().getFullYear()} 張睿恩 (Rui-En Zhang)
         </p>
         {
           buildInfo && buildInfo.shortCommitHash !== "dev" && (

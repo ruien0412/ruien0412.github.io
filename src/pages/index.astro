@@ -40,7 +40,7 @@ const itemVariants = {
     class="container mx-auto px-6 lg:px-8 py-24 md:py-32 border-b border-gray-200 dark:border-gray-800 relative z-10"
   >
     <MotionWrapper
-      client:idle
+      client:load
       className="max-w-2xl"
       variants={containerVariants}
       initial="hidden"
@@ -52,7 +52,7 @@ const itemVariants = {
     >
       {/* 頂部標籤 */}
       <MotionWrapper
-        client:idle
+        client:load
         variants={itemVariants}
         className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 px-3 py-1.5 rounded-full text-sm font-medium mb-6"
       >
@@ -62,7 +62,7 @@ const itemVariants = {
 
       {/* 主標題 - 清晰的視覺層級 */}
       <MotionWrapper
-        client:idle
+        client:load
         type="h1"
         className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white leading-tight mb-6"
         variants={itemVariants}
@@ -71,7 +71,7 @@ const itemVariants = {
       </MotionWrapper>
 
       <MotionWrapper
-        client:idle
+        client:load
         type="h2"
         className="text-2xl md:text-3xl font-semibold text-gray-600 dark:text-gray-300 mb-6"
         variants={itemVariants}
@@ -81,7 +81,7 @@ const itemVariants = {
 
       {/* 描述文字 - 固定高度防止版面移動 */}
       <TypewriterText
-        client:idle
+        client:load
         texts={descriptions}
         typingSpeed={50}
         deletingSpeed={30}
@@ -90,23 +90,14 @@ const itemVariants = {
         variants={itemVariants}
       />
 
-      {/* SEO 改善：提供給不支援 JS 的爬蟲的靜態內容 */}
-      <noscript>
-        <p
-          class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-8 max-w-xl hidden"
-        >
-          {descriptions[0]}
-        </p>
-      </noscript>
-
       {/* 主要行動按鈕 - 清晰且易於識別 */}
       <MotionWrapper
-        client:idle
+        client:load
         className="flex flex-col sm:flex-row gap-4"
         variants={itemVariants}
       >
         <MotionWrapper
-          client:idle
+          client:load
           whileHover={{ x: 4 }}
           whileTap={{ scale: 0.98 }}
         >
@@ -119,7 +110,7 @@ const itemVariants = {
           </a>
         </MotionWrapper>
         <MotionWrapper
-          client:idle
+          client:load
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >

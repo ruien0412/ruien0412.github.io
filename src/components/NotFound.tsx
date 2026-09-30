@@ -84,10 +84,11 @@ export default function NotFound() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.4 }}
                 >
-                    <a href="/">
-                        <button className="w-full px-8 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
-                            立即返回首頁
-                        </button>
+                    <a
+                        href="/"
+                        className="block w-full px-8 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                    >
+                        立即返回首頁
                     </a>
 
                     {/* 導航連結 */}

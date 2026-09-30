@@ -17,7 +17,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 <!doctype html>
 <html lang="zh-TW" style={{ fontFamily: "var(--font-noto-sans-tc)" }}>
   <head>
-    <BaseHead title={`${title} | 張睿恩 (Rui-En Zhang)`} description={description} />
+    <BaseHead title={`${title} | 張睿恩 (Rui-En Zhang)`} description={description} image={heroImage} />
 		<style>
 			main {
 				width: calc(100% - 2em);

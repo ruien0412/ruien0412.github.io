@@ -13,6 +13,10 @@ export default function Header({ pathname }: { pathname: string }) {
         { href: '/contact', label: '聯絡我' }
     ];
 
+    // pathname 在建置後會帶結尾斜線（如 /about/），文章頁則是 /blog/xxx/
+    const isActive = (href: string) =>
+        pathname === href || pathname.startsWith(`${href}/`);
+
     return (
         <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-black/80 border-b border-gray-200 dark:border-gray-800">
             <div className="container mx-auto px-6 lg:px-8 py-4">
@@ -41,7 +45,7 @@ export default function Header({ pathname }: { pathname: string }) {
                                 <a
                                     href={item.href}
                                     className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                                        pathname === item.href
+                                        isActive(item.href)
                                             ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30'
                                             : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                                     }`}
@@ -58,6 +62,9 @@ export default function Header({ pathname }: { pathname: string }) {
                         className="md:hidden p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        aria-label={isMenuOpen ? '關閉選單' : '開啟選單'}
+                        aria-expanded={isMenuOpen}
+                        aria-controls="mobile-nav"
                     >
                         {isMenuOpen ? (
                             <HiOutlineXMark className="w-6 h-6" />
@@ -69,6 +76,7 @@ export default function Header({ pathname }: { pathname: string }) {
 
                 {/* Mobile Navigation */}
                 <MotionWrapper
+                    id="mobile-nav"
                     className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: isMenuOpen ? 1 : 0, height: isMenuOpen ? 'auto' : 0 }}
@@ -84,7 +92,7 @@ export default function Header({ pathname }: { pathname: string }) {
                                 <a
                                     href={item.href}
                                     className={`block px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                                        pathname === item.href
+                                        isActive(item.href)
                                             ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30'
                                             : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                                     }`}
