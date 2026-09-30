@@ -43,6 +43,6 @@ React 只用在建置時渲染 [react-icons](https://react-icons.github.io/react
 title: "文章標題"
 description: "文章摘要"
 pubDate: "2026-01-01"
-heroImage: "/blog-placeholder-1.jpg" # 選填，同時作為社群分享預覽圖
+heroImage: "/images/cover.jpg" # 選填，放在 public/ 底下；同時作為社群分享預覽圖
 ---
 ```
